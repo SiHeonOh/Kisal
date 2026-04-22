@@ -1,0 +1,183 @@
+/* Per-column accent colors */
+.column[data-col="backlog"]     { --col-accent: #4B607F; }
+.column[data-col="started"]     { --col-accent: #F5C000; }
+.column[data-col="in_progress"] { --col-accent: #F44E1C; }
+.column[data-col="done"]        { --col-accent: #00C8A0; }
+.column[data-col="persistent"]  { --col-accent: #9B59B6; }
+
+.column {
+  counter-increment: col-counter;
+  display: flex;
+  flex-direction: column;
+  width: 272px;
+  flex-shrink: 0;
+  background: var(--surface);
+  border: 2px solid var(--border-subtle);
+  border-top: 3px solid var(--col-accent);
+  box-shadow: 4px 4px 0px var(--col-accent);
+  max-height: 100%;
+  position: relative;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+/* Decorative giant column index watermark */
+.column::before {
+  content: counter(col-counter, decimal-leading-zero);
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: var(--font-condensed);
+  font-size: 5rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--col-accent);
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.04em;
+}
+
+.column--drag-over {
+  border-color: var(--col-accent);
+  background: color-mix(in srgb, var(--col-accent) 5%, var(--surface));
+  box-shadow: 6px 6px 0px var(--col-accent);
+}
+
+.column-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--border-subtle);
+  flex-shrink: 0;
+  background: var(--surface-subtle);
+  position: relative;
+}
+
+.column-num {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--col-accent);
+  opacity: 0.6;
+  flex-shrink: 0;
+}
+
+.column-label {
+  font-family: var(--font-condensed);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--col-accent);
+  flex: 1;
+}
+
+.column-count {
+  font-family: var(--font-condensed);
+  font-size: 10px;
+  font-weight: 900;
+  color: #000;
+  background: var(--col-accent);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0;
+}
+
+.column-cards {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  min-height: 40px;
+  background-image: var(--stripe);
+  background-attachment: local;
+  opacity: 1;
+  position: relative;
+}
+
+/* Tint stripe so it's very subtle */
+.column-cards::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--surface);
+  opacity: 0.93;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.column-cards > * {
+  position: relative;
+  z-index: 1;
+}
+
+.column-drop-hint {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-condensed);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--col-accent);
+  border: 2px dashed var(--col-accent);
+  min-height: 60px;
+  padding: 16px;
+  opacity: 0.5;
+}
+
+.column-footer {
+  padding: 6px 8px;
+  border-top: 2px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+.column-add-btn {
+  width: 100%;
+  padding: 7px 8px;
+  text-align: left;
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  background: transparent;
+  border: 2px dashed transparent;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.column-add-btn:hover {
+  color: var(--col-accent);
+  border-color: var(--col-accent);
+  background: color-mix(in srgb, var(--col-accent) 6%, transparent);
+}
+
+.column-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.column-add-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 2px solid var(--col-accent);
+  background: var(--surface-subtle);
+  color: var(--text);
+  font-family: var(--font-condensed);
+  font-size: 12px;
+  font-weight: 600;
+  outline: none;
+  box-shadow: 2px 2px 0px var(--col-accent);
+}

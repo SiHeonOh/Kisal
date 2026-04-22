@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,700&display=swap');
+
+/* ── DARK — Swiss-Brutalist Cyberpunk ─────────────────── */
+:root {
+  --bg:             #0f1420;
+  --surface:        #1C223A;
+  --surface-subtle: #141928;
+  --surface-raised: #212840;
+  --brand-bg:       #0a0d18;
+
+  --accent:         #F44E1C;
+  --accent-2:       #4b607f;
+  --accent-3:       #00C8A0;
+
+  --text:           #E5D4B6;
+  --text-muted:     #8a9bb5;
+  --text-dim:       #4a5a72;
+
+  --border:         #F44E1C;
+  --border-alt:     #E5D4B6;
+  --border-subtle:  #252e4a;
+  --danger:         #ff3b2f;
+
+  /* Fonts */
+  --font-condensed: 'Barlow Condensed', 'Antonio', Impact, sans-serif;
+  --font-display:   'Maratype', 'Courier New', monospace;
+  --font-heading:   'Algerian', Georgia, serif;
+  --font-body:      'Luna', 'Barlow Condensed', sans-serif;
+  --font-mono:      'Courier New', monospace;
+
+  /* Printing-press offset shadows */
+  --shadow-card:    4px 4px 0px var(--accent);
+  --shadow-btn:     3px 3px 0px var(--accent);
+  --shadow-btn-alt: 3px 3px 0px var(--border-alt);
+
+  --radius: 0px;
+  --transition: 100ms ease;
+
+  --stripe: repeating-linear-gradient(
+    45deg,
+    var(--accent) 0, var(--accent) 1px,
+    transparent 1px, transparent 14px
+  );
+}
+
+/* ── LIGHT ────────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg:             #E5D4B6;
+  --surface:        #d4c4a6;
+  --surface-subtle: #c8b898;
+  --surface-raised: #daccb2;
+  --brand-bg:       #1C223A;
+
+  --accent:         #F44E1C;
+  --accent-2:       #1C223A;
+  --accent-3:       #2A8A6E;
+
+  --text:           #1C223A;
+  --text-muted:     #4b607f;
+  --text-dim:       #8a9bb5;
+
+  --border:         #1C223A;
+  --border-alt:     #1C223A;
+  --border-subtle:  #b8a88a;
+  --danger:         #C0392B;
+
+  --shadow-card:    4px 4px 0px #1C223A;
+  --shadow-btn:     3px 3px 0px #1C223A;
+  --shadow-btn-alt: 3px 3px 0px #1C223A;
+
+  --stripe: repeating-linear-gradient(
+    45deg,
+    #1C223A 0, #1C223A 1px,
+    transparent 1px, transparent 14px
+  );
+}

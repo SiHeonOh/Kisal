@@ -1,0 +1,121 @@
+@import './variables.css';
+
+/* ── Custom fonts ──────────────────────────────────────── */
+@font-face {
+  font-family: 'Maratype';
+  src: url('/fonts/Maratype.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Algerian';
+  src: url('/fonts/Algerian.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Luna';
+  src: url('/fonts/Luna.otf') format('opentype');
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* ── Reset ─────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-condensed);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+button {
+  font-family: var(--font-condensed);
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+input, textarea {
+  font-family: var(--font-condensed);
+  font-size: inherit;
+  color: inherit;
+  background: transparent;
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover { text-decoration: underline; }
+
+/* ── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--surface-subtle); }
+::-webkit-scrollbar-thumb { background: var(--border-subtle); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── Focus ─────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ── Stamped button base — apply globally ──────────────── */
+.btn-stamp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 34px;
+  padding: 0 14px;
+  font-family: var(--font-condensed);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border: 2px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: var(--shadow-btn);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition), color var(--transition);
+}
+.btn-stamp:hover {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-btn);
+}
+.btn-stamp:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+/* ── Utility ───────────────────────────────────────────── */
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+}

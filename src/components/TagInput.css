@@ -1,0 +1,73 @@
+.tag-input-wrap {
+  border: 2px solid var(--border-subtle);
+  border-left: 3px solid var(--accent-2);
+  background: var(--surface-subtle);
+  padding: 6px 8px;
+  min-height: 38px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  cursor: text;
+  position: relative;
+}
+
+.tag-input-wrap:focus-within {
+  border-color: var(--accent-2);
+  border-left-color: var(--accent);
+  box-shadow: 2px 2px 0px var(--accent);
+}
+
+.tag-input-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+
+.tag-input-field {
+  flex: 1;
+  min-width: 80px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+  padding: 1px 0;
+}
+
+.tag-suggestions {
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  top: calc(100% + 2px);
+  background: var(--surface-raised);
+  border: 2px solid var(--accent);
+  z-index: 50;
+  max-height: 180px;
+  overflow-y: auto;
+  box-shadow: var(--shadow-btn);
+}
+
+.tag-suggestion-item {
+  display: block;
+  width: 100%;
+  padding: 7px 12px;
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.tag-suggestion-item:last-child { border-bottom: none; }
+
+.tag-suggestion-item:hover {
+  background: var(--surface-subtle);
+  color: var(--accent);
+}

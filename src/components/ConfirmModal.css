@@ -1,0 +1,125 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: var(--surface);
+  border: 2px solid var(--border-subtle);
+  border-top: 3px solid var(--accent);
+  width: 380px;
+  max-width: calc(100vw - 32px);
+  position: relative;
+  box-shadow: var(--shadow-card);
+}
+
+/* Corner bracket — bottom right */
+.modal-box::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  border-right: 3px solid var(--accent);
+  border-bottom: 3px solid var(--accent);
+}
+
+.modal-header {
+  padding: 16px 20px 12px;
+  border-bottom: 2px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.modal-header-line {
+  width: 4px;
+  height: 22px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.modal-title {
+  font-family: var(--font-condensed);
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.modal-body {
+  padding: 20px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.modal-footer {
+  padding: 12px 20px;
+  border-top: 2px solid var(--border-subtle);
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  background: var(--surface-subtle);
+}
+
+.modal-btn {
+  height: 36px;
+  padding: 0 20px;
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 2px solid transparent;
+  box-shadow: var(--shadow-btn);
+  transition: transform var(--transition), box-shadow var(--transition), background var(--transition);
+}
+
+.modal-btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: none;
+}
+
+.modal-btn--cancel {
+  background: transparent;
+  border-color: var(--border-subtle);
+  color: var(--text-muted);
+  box-shadow: var(--shadow-btn-alt);
+}
+
+.modal-btn--cancel:hover {
+  border-color: var(--border-alt);
+  color: var(--text);
+}
+
+.modal-btn--confirm {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.modal-btn--confirm:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px var(--accent);
+}
+
+.modal-btn--danger {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+
+.modal-btn--danger:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px var(--danger);
+}
