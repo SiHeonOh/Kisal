@@ -12,10 +12,12 @@
   justify-content: flex-end;
   padding: 6px 14px;
   border-bottom: 2px solid var(--border-subtle);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.28);
   background: var(--surface-subtle);
   flex-shrink: 0;
   gap: 10px;
   position: relative;
+  z-index: 7;
 }
 
 .board-toolbar::before {

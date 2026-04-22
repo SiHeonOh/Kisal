@@ -1,9 +1,13 @@
-/* Per-column accent colors */
+/* Per-column accent colors — dark mode */
 .column[data-col="backlog"]     { --col-accent: #4B607F; }
 .column[data-col="started"]     { --col-accent: #F5C000; }
 .column[data-col="in_progress"] { --col-accent: #F44E1C; }
 .column[data-col="done"]        { --col-accent: #00C8A0; }
 .column[data-col="persistent"]  { --col-accent: #9B59B6; }
+
+/* Light mode — darken yellow and cyan for legibility on cream bg */
+[data-theme="light"] .column[data-col="started"] { --col-accent: #9A6B00; }
+[data-theme="light"] .column[data-col="done"]     { --col-accent: #1A7A5E; }
 
 .column {
   counter-increment: col-counter;

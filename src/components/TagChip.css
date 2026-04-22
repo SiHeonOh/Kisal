@@ -10,6 +10,7 @@
   border: 2px solid currentColor;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  box-shadow: 2px 2px 0 currentColor;
 }
 
 .tag-chip:nth-child(3n+1) {

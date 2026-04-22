@@ -6,9 +6,12 @@
   height: 40px;
   background: var(--surface-subtle);
   border-bottom: 2px solid var(--border-subtle);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.28);
   flex-shrink: 0;
   gap: 12px;
   overflow: hidden;
+  position: relative;
+  z-index: 8;
 }
 
 .tag-filter-left {
@@ -114,7 +117,20 @@
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: background var(--transition), color var(--transition);
+  box-shadow: 2px 2px 0 currentColor;
+  transition: background var(--transition), color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.tag-filter-chip:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 currentColor;
+}
+
+.tag-filter-chip--1.tag-filter-chip--active,
+.tag-filter-chip--2.tag-filter-chip--active,
+.tag-filter-chip--3.tag-filter-chip--active {
+  transform: translate(2px, 2px);
+  box-shadow: none;
 }
 
 .tag-filter-chip--1 { color: var(--accent-2); }
