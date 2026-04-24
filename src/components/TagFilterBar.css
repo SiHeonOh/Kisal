@@ -152,6 +152,43 @@
   color: #000;
 }
 
+.tag-filter-chip-wrap {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.tag-filter-chip-delete {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-left: 3px;
+  border: 1px solid currentColor;
+  background: transparent;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity var(--transition), background var(--transition);
+}
+
+.tag-filter-chip-delete--1 { color: var(--accent-2); }
+.tag-filter-chip-delete--2 { color: var(--accent); }
+.tag-filter-chip-delete--3 { color: var(--accent-3); }
+
+.tag-filter-chip-wrap:hover .tag-filter-chip-delete {
+  display: flex;
+}
+
+.tag-filter-chip-delete:hover {
+  opacity: 1;
+  background: color-mix(in srgb, currentColor 20%, transparent);
+}
+
 .tag-filter-status {
   font-family: var(--font-condensed);
   font-size: 10px;

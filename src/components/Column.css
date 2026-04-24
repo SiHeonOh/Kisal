@@ -1,5 +1,5 @@
 /* Per-column accent colors — dark mode */
-.column[data-col="backlog"]     { --col-accent: #4B607F; }
+.column[data-col="backlog"]     { --col-accent: #5B9CF6; }
 .column[data-col="started"]     { --col-accent: #F5C000; }
 .column[data-col="in_progress"] { --col-accent: #F44E1C; }
 .column[data-col="done"]        { --col-accent: #00C8A0; }

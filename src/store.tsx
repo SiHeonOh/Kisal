@@ -72,6 +72,7 @@ type Action =
   | { type: 'SET_THEME'; payload: AppState['theme'] }
   | { type: 'SET_LOADING'; payload: boolean }
   | { type: 'ADD_GLOBAL_TAG'; payload: string }
+  | { type: 'DELETE_GLOBAL_TAG'; payload: string }
   | { type: 'TOGGLE_TAG_FILTER'; payload: string }
   | { type: 'CLEAR_TAG_FILTERS' };
 
@@ -124,6 +125,17 @@ function reducer(state: AppState, action: Action): AppState {
       const globalTags = [...state.globalTags, action.payload].sort();
       saveGlobalTags(globalTags);
       return { ...state, globalTags };
+    }
+    case 'DELETE_GLOBAL_TAG': {
+      const globalTags = state.globalTags.filter(t => t !== action.payload);
+      saveGlobalTags(globalTags);
+      const activeTagFilters = state.activeTagFilters.filter(t => t !== action.payload);
+      const cards = state.cards.map(c =>
+        c.tags?.includes(action.payload)
+          ? { ...c, tags: c.tags.filter(t => t !== action.payload) }
+          : c
+      );
+      return { ...state, globalTags, activeTagFilters, cards };
     }
     case 'TOGGLE_TAG_FILTER': {
       const activeTagFilters = state.activeTagFilters.includes(action.payload)
@@ -204,6 +216,16 @@ function makeActions(state: AppState, dispatch: Dispatch<Action>) {
     addGlobalTag(tag: string) {
       const t = tag.trim().toLowerCase();
       if (t) dispatch({ type: 'ADD_GLOBAL_TAG', payload: t });
+    },
+
+    async deleteGlobalTag(tag: string) {
+      const affectedCards = state.cards.filter(c => c.tags?.includes(tag));
+      dispatch({ type: 'DELETE_GLOBAL_TAG', payload: tag });
+      await Promise.all(
+        affectedCards.map(c =>
+          cardsService.updateCard(c.id, { ...c, tags: c.tags!.filter(t => t !== tag) })
+        )
+      );
     },
 
     setTheme(theme: 'light' | 'dark') {

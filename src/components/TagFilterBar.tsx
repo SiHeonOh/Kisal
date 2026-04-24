@@ -54,14 +54,23 @@ export function TagFilterBar() {
           {state.globalTags.map((tag, i) => {
             const active = state.activeTagFilters.includes(tag);
             return (
-              <button
-                key={tag}
-                className={`tag-filter-chip tag-filter-chip--${(i % 3) + 1} ${active ? 'tag-filter-chip--active' : ''}`}
-                onClick={() => dispatch({ type: 'TOGGLE_TAG_FILTER', payload: tag })}
-                aria-pressed={active}
-              >
-                {tag}
-              </button>
+              <span key={tag} className="tag-filter-chip-wrap">
+                <button
+                  className={`tag-filter-chip tag-filter-chip--${(i % 3) + 1} ${active ? 'tag-filter-chip--active' : ''}`}
+                  onClick={() => dispatch({ type: 'TOGGLE_TAG_FILTER', payload: tag })}
+                  aria-pressed={active}
+                >
+                  {tag}
+                </button>
+                <button
+                  className={`tag-filter-chip-delete tag-filter-chip-delete--${(i % 3) + 1}`}
+                  onClick={() => actions.deleteGlobalTag(tag)}
+                  title={`Delete tag "${tag}"`}
+                  aria-label={`Delete tag ${tag}`}
+                >
+                  ×
+                </button>
+              </span>
             );
           })}
         </div>
