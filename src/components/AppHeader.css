@@ -1,80 +1,200 @@
 .app-header {
-  height: 52px;
+  height: 60px;
   background: var(--brand-bg);
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
-  border-bottom: 3px solid var(--accent);
+  border-bottom: 1px solid var(--border-subtle);
   position: relative;
   z-index: 10;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.45);
-  /* Subtle scanline noise overlay */
-  background-image: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 3px,
-    rgba(255,255,255,0.015) 3px,
-    rgba(255,255,255,0.015) 4px
+}
+
+/* Bottom neon accent line */
+.app-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--accent-neon) 12%,
+    var(--accent-neon) 88%,
+    transparent 100%
   );
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* ── Left: logo + sub ──────────────────────────────────────── */
+.app-header-left {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 0 24px;
 }
 
 .app-logo {
   font-family: var(--font-display);
-  font-size: 30px;
-  letter-spacing: 0.08em;
-  color: var(--accent);
+  font-size: 34px;
+  letter-spacing: 0.1em;
+  color: var(--accent-neon);
+  text-transform: uppercase;
+  line-height: 1;
+  animation: logo-glitch 14s steps(1) infinite;
+  position: relative;
+}
+
+@keyframes logo-glitch {
+  0%, 92%, 100% {
+    transform: none;
+    text-shadow: none;
+    clip-path: none;
+    opacity: 1;
+  }
+  93% {
+    transform: skewX(-4deg) translateX(4px);
+    text-shadow: -4px 0 var(--accent-2), 4px 0 var(--accent-3);
+    opacity: 0.9;
+  }
+  94% {
+    transform: skewX(2deg) translateX(-3px);
+    text-shadow: 3px 0 var(--accent-2);
+    clip-path: inset(20% 0 40% 0);
+  }
+  95% {
+    transform: translateX(2px);
+    text-shadow: -2px 0 var(--accent-3);
+    clip-path: none;
+    opacity: 1;
+  }
+  96% {
+    transform: skewX(-1deg) translateX(-1px);
+    text-shadow: none;
+    opacity: 0.85;
+  }
+  97% {
+    transform: none;
+    text-shadow: none;
+    opacity: 1;
+    clip-path: inset(60% 0 10% 0);
+  }
+  98%, 99% {
+    transform: none;
+    text-shadow: none;
+    clip-path: none;
+    opacity: 1;
+  }
+}
+
+/* Large Algerian "// TASK BOARD" subtitle */
+.app-logo-sub {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: #FFFFFF;
+  text-transform: uppercase;
+  line-height: 1;
+  opacity: 0.92;
+}
+
+/* ── Center: live clock ────────────────────────────────────── */
+.app-header-sys {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  gap: 10px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.app-sys-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--accent-neon);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: sys-pulse 2.8s ease-in-out infinite;
+}
+
+@keyframes sys-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 6px var(--accent-neon); }
+  50%       { opacity: 0.2; box-shadow: none; }
+}
+
+.app-sys-date {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--text-muted);
   text-transform: uppercase;
 }
 
-[data-theme="light"] .app-logo {
-  color: var(--accent);
+.app-sys-divider {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent-neon);
+  letter-spacing: 0.1em;
+  opacity: 0.4;
 }
 
+.app-sys-clock {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent-neon);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Right: action buttons ─────────────────────────────────── */
 .app-header-actions {
   display: flex;
   align-items: stretch;
+  height: 100%;
 }
 
 .header-btn {
-  height: 34px;
-  margin: auto 6px;
-  padding: 0 16px;
-  font-family: var(--font-condensed);
-  font-size: 11px;
+  height: 100%;
+  padding: 0 26px;
+  font-family: var(--font-body);
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  border: 2px solid var(--border-subtle);
-  background: var(--surface);
+  color: #ffffff;
+  border: none;
+  background: transparent;
   cursor: pointer;
-  box-shadow: var(--shadow-btn);
-  transition: transform var(--transition), box-shadow var(--transition), color var(--transition), background var(--transition), border-color var(--transition);
+  transition: color var(--transition), background var(--transition);
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  white-space: nowrap;
 }
 
 .header-btn:hover {
-  color: var(--accent);
-  border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px var(--accent);
+  background: #c2fe0b;
+  color: #000000;
 }
 
-.header-btn:active {
-  transform: translate(3px, 3px);
-  box-shadow: none;
+.header-btn--exit:hover {
+  background: #c2fe0b;
+  color: #000000;
 }
 
-.header-btn--icon {
-  width: 38px;
-  padding: 0;
-  justify-content: center;
-  font-size: 16px;
+[data-theme="light"] .header-btn {
+  color: #c2fe0b;
+}
+
+[data-theme="light"] .header-btn:hover,
+[data-theme="light"] .header-btn--exit:hover {
+  background: #c2fe0b;
+  color: #000000;
 }

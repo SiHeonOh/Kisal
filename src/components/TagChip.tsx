@@ -8,7 +8,7 @@ interface Props {
 export function TagChip({ tag, onRemove }: Props) {
   return (
     <span className="tag-chip">
-      {tag}
+      #{tag}
       {onRemove && (
         <button className="tag-chip-remove" onClick={onRemove} aria-label={`Remove tag ${tag}`}>
           ×

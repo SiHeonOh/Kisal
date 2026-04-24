@@ -1,16 +1,16 @@
 .tag-input-wrap {
-  border: 2px solid var(--border-subtle);
-  border-left: 3px solid var(--accent-2);
+  border: 1px solid var(--border-subtle);
+  border-left: 2px solid var(--accent-3);
   background: var(--surface-subtle);
-  padding: 6px 8px;
-  min-height: 38px;
+  padding: 5px 8px;
+  min-height: 36px;
   transition: border-color var(--transition), box-shadow var(--transition);
   cursor: text;
   position: relative;
 }
 
 .tag-input-wrap:focus-within {
-  border-color: var(--accent-2);
+  border-color: var(--accent-3);
   border-left-color: var(--accent);
   box-shadow: 2px 2px 0px var(--accent);
 }
@@ -29,22 +29,23 @@
   outline: none;
   background: transparent;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   color: var(--text);
   padding: 1px 0;
+  letter-spacing: 0.08em;
 }
 
 .tag-suggestions {
   position: absolute;
-  left: -2px;
-  right: -2px;
+  left: -1px;
+  right: -1px;
   top: calc(100% + 2px);
   background: var(--surface-raised);
-  border: 2px solid var(--accent);
+  border: 1px solid var(--accent);
   z-index: 50;
   max-height: 180px;
   overflow-y: auto;
-  box-shadow: var(--shadow-btn);
+  box-shadow: 3px 3px 0 var(--accent);
 }
 
 .tag-suggestion-item {
@@ -53,9 +54,9 @@
   padding: 7px 12px;
   text-align: left;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-muted);
   background: transparent;
@@ -68,6 +69,6 @@
 .tag-suggestion-item:last-child { border-bottom: none; }
 
 .tag-suggestion-item:hover {
-  background: var(--surface-subtle);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
   color: var(--accent);
 }

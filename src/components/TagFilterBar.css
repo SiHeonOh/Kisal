@@ -2,22 +2,32 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 14px;
-  height: 40px;
-  background: var(--surface-subtle);
+  padding: 0 16px;
+  height: 44px;
+  background: var(--bg);
   border-bottom: 2px solid var(--border-subtle);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.28);
   flex-shrink: 0;
-  gap: 12px;
+  gap: 14px;
   overflow: hidden;
   position: relative;
   z-index: 8;
 }
 
+/* bottom accent line */
+.tag-filter-bar::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent) 0%, transparent 60%);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
 .tag-filter-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   flex: 1;
   min-width: 0;
   overflow: hidden;
@@ -26,71 +36,99 @@
 .tag-filter-right {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   flex-shrink: 0;
 }
 
+/* ── Create-tag button — dark: white text, no bg ───────────── */
 .tag-filter-create-btn {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
   height: 28px;
-  padding: 0 12px;
-  background: var(--accent);
-  color: #fff;
-  border: 2px solid var(--accent);
-  font-family: var(--font-condensed);
-  font-size: 10px;
+  padding: 0 14px;
+  background: transparent;
+  color: #ffffff;
+  border: none;
+  font-family: var(--font-body);
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   cursor: pointer;
   flex-shrink: 0;
-  box-shadow: var(--shadow-btn);
-  transition: transform var(--transition), box-shadow var(--transition);
+  transition: background var(--transition), color var(--transition),
+              border-color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
 .tag-filter-create-btn:hover {
+  background: #c2fe0b;
+  color: #000000;
+  border-color: #c2fe0b;
+  box-shadow: 3px 3px 0px #c2fe0b;
   transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0px var(--accent);
 }
 
 .tag-filter-create-btn:active {
-  transform: translate(3px, 3px);
+  transform: translate(2px, 2px);
   box-shadow: none;
 }
 
+/* light: black text, no bg */
+[data-theme="light"] .tag-filter-create-btn {
+  background: transparent;
+  color: #000000;
+  border: none;
+}
+[data-theme="light"] .tag-filter-create-btn:hover {
+  background: #000000;
+  color: #c2fe0b;
+  border-color: #000000;
+  box-shadow: 3px 3px 0px #000000;
+}
+
 .tag-filter-create-icon {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 400;
   line-height: 1;
 }
 
+/* ── New-tag text input ─────────────────────────────────────── */
 .tag-filter-input {
   height: 28px;
-  padding: 0 10px;
+  padding: 0 12px;
   border: 2px solid var(--accent);
-  background: var(--surface);
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
   color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 700;
   outline: none;
-  width: 140px;
+  width: 160px;
   flex-shrink: 0;
-  box-shadow: var(--shadow-btn);
+  box-shadow: 3px 3px 0px var(--accent);
+  letter-spacing: 0.06em;
+}
+
+/* In light mode (lime bg) the input needs dark text */
+[data-theme="light"] .tag-filter-input {
+  color: #000000;
+  background: rgba(255,255,255,0.6);
 }
 
 .tag-filter-divider {
   width: 2px;
   height: 20px;
-  background: var(--border-subtle);
+  background: var(--accent);
+  opacity: 0.25;
   flex-shrink: 0;
 }
 
+/* ── Tag chip scroll strip ──────────────────────────────────── */
 .tag-filter-chips {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -98,60 +136,16 @@
 .tag-filter-chips::-webkit-scrollbar { display: none; }
 
 .tag-filter-empty {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  color: var(--text-dim);
-  letter-spacing: 0.1em;
-}
-
-.tag-filter-chip {
-  height: 22px;
-  padding: 0 10px;
-  border: 2px solid currentColor;
-  background: transparent;
-  font-family: var(--font-condensed);
-  font-size: 10px;
+  font-family: var(--font-body);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  color: var(--accent);
+  opacity: 0.45;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
-  box-shadow: 2px 2px 0 currentColor;
-  transition: background var(--transition), color var(--transition), box-shadow var(--transition), transform var(--transition);
 }
 
-.tag-filter-chip:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 3px 3px 0 currentColor;
-}
-
-.tag-filter-chip--1.tag-filter-chip--active,
-.tag-filter-chip--2.tag-filter-chip--active,
-.tag-filter-chip--3.tag-filter-chip--active {
-  transform: translate(2px, 2px);
-  box-shadow: none;
-}
-
-.tag-filter-chip--1 { color: var(--accent-2); }
-.tag-filter-chip--2 { color: var(--accent); }
-.tag-filter-chip--3 { color: var(--accent-3); }
-
-.tag-filter-chip--1.tag-filter-chip--active {
-  background: var(--accent-2);
-  color: #fff;
-}
-
-.tag-filter-chip--2.tag-filter-chip--active {
-  background: var(--accent);
-  color: #fff;
-}
-
-.tag-filter-chip--3.tag-filter-chip--active {
-  background: var(--accent-3);
-  color: #000;
-}
-
+/* ── Chip wrap ──────────────────────────────────────────────── */
 .tag-filter-chip-wrap {
   display: inline-flex;
   align-items: center;
@@ -159,62 +153,125 @@
   flex-shrink: 0;
 }
 
+/* dark: white text, no bg, no border */
+.tag-filter-chip {
+  height: 24px;
+  padding: 0 12px;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background var(--transition), color var(--transition),
+              border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.tag-filter-chip:hover {
+  background: #c2fe0b;
+  color: #000000;
+  border-color: #c2fe0b;
+  box-shadow: 3px 3px 0 #c2fe0b;
+  transform: translate(-1px, -1px);
+}
+
+.tag-filter-chip--1.tag-filter-chip--active,
+.tag-filter-chip--2.tag-filter-chip--active,
+.tag-filter-chip--3.tag-filter-chip--active {
+  background: #c2fe0b;
+  color: #000000;
+  border-color: #c2fe0b;
+  box-shadow: none;
+  transform: translate(1px, 1px);
+}
+
+/* light: black text, no bg, no border */
+[data-theme="light"] .tag-filter-chip {
+  background: transparent;
+  color: #000000;
+  border: none;
+}
+[data-theme="light"] .tag-filter-chip:hover {
+  background: #000000;
+  color: #c2fe0b;
+  border-color: #000000;
+  box-shadow: 3px 3px 0 #000000;
+}
+[data-theme="light"] .tag-filter-chip--1.tag-filter-chip--active,
+[data-theme="light"] .tag-filter-chip--2.tag-filter-chip--active,
+[data-theme="light"] .tag-filter-chip--3.tag-filter-chip--active {
+  background: #000000;
+  color: #c2fe0b;
+  border-color: #000000;
+}
+
+/* ── Delete button ──────────────────────────────────────────── */
 .tag-filter-chip-delete {
   display: none;
   align-items: center;
   justify-content: center;
   width: 16px;
   height: 16px;
-  margin-left: 3px;
-  border: 1px solid currentColor;
+  margin-left: 4px;
+  border: 2px solid currentColor;
   background: transparent;
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
-  opacity: 0.7;
+  opacity: 0.65;
   transition: opacity var(--transition), background var(--transition);
 }
 
-.tag-filter-chip-delete--1 { color: var(--accent-2); }
-.tag-filter-chip-delete--2 { color: var(--accent); }
-.tag-filter-chip-delete--3 { color: var(--accent-3); }
+.tag-filter-chip-delete--1,
+.tag-filter-chip-delete--2,
+.tag-filter-chip-delete--3 { color: #ffffff; border-color: #ffffff; }
 
-.tag-filter-chip-wrap:hover .tag-filter-chip-delete {
-  display: flex;
-}
+[data-theme="light"] .tag-filter-chip-delete--1,
+[data-theme="light"] .tag-filter-chip-delete--2,
+[data-theme="light"] .tag-filter-chip-delete--3 { color: #000000; border-color: #000000; }
+
+.tag-filter-chip-wrap:hover .tag-filter-chip-delete { display: flex; }
 
 .tag-filter-chip-delete:hover {
   opacity: 1;
   background: color-mix(in srgb, currentColor 20%, transparent);
 }
 
+/* ── Right-side status + clear btn ─────────────────────────── */
 .tag-filter-status {
-  font-family: var(--font-condensed);
-  font-size: 10px;
+  font-family: var(--font-heading);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.22em;
   color: var(--accent);
   text-transform: uppercase;
 }
 
 .tag-filter-clear-btn {
-  height: 24px;
-  padding: 0 10px;
-  border: 2px solid var(--border-subtle);
+  height: 26px;
+  padding: 0 12px;
+  border: 2px solid var(--accent);
   background: transparent;
-  color: var(--text-muted);
-  font-family: var(--font-condensed);
-  font-size: 10px;
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all var(--transition);
+  opacity: 0.6;
 }
 
 .tag-filter-clear-btn:hover {
   border-color: var(--danger);
   color: var(--danger);
-  box-shadow: 2px 2px 0px var(--danger);
+  box-shadow: 3px 3px 0px var(--danger);
+  opacity: 1;
 }

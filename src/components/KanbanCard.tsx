@@ -13,9 +13,8 @@ export function KanbanCard({ card, onDragStart }: Props) {
   const { state, dispatch } = useAppStore();
   const isSelected = state.selectedCardId === card.id;
 
-  const createdDate = new Date(card.created_at).toLocaleDateString(undefined, {
-    month: 'short', day: 'numeric',
-  });
+  const d = new Date(card.created_at);
+  const createdDate = `${d.getMonth() + 1}月${d.getDate()}日`;
 
   return (
     <article

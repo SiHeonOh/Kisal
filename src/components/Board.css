@@ -6,14 +6,84 @@
   position: relative;
 }
 
+/* ── KISAL background watermark (NuCore font) ─────────────── */
+.board-watermark {
+  position: absolute;
+  top: 64%;
+  left: 52%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-nucore), var(--font-condensed);
+  font-size: clamp(80px, 17vw, 320px);
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.06;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+  line-height: 1;
+  width: max-content;
+}
+
+/* ── Radar sweep line ─────────────────────────────────────── */
+.board-radar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 10%,
+    var(--accent) 50%,
+    transparent 90%,
+    transparent 100%
+  );
+  pointer-events: none;
+  user-select: none;
+  z-index: 3;
+  opacity: 0;
+  animation: radar-sweep 9s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes radar-sweep {
+  0%   { top: 0%;   opacity: 0;   }
+  3%   { opacity: 0.55; }
+  85%  { opacity: 0.18; }
+  100% { top: 100%; opacity: 0;   }
+}
+
+/* ── Corner targeting reticles ────────────────────────────── */
+.board-reticle {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 72px;
+  line-height: 1;
+  color: var(--accent);
+  opacity: 0.07;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1;
+  font-weight: 400;
+}
+
+.board-reticle--tl { top:  12px; left:  14px; }
+.board-reticle--tr { top:  12px; right: 14px; }
+.board-reticle--bl { bottom: 5px; left:  14px; }
+.board-reticle--br { bottom: 5px; right: 14px; }
+
+/* ── Board toolbar ────────────────────────────────────────── */
 .board-toolbar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 6px 14px;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 40px;
   border-bottom: 2px solid var(--border-subtle);
-  box-shadow: 0 4px 14px rgba(0,0,0,0.28);
-  background: var(--surface-subtle);
+  background: var(--bg);
   flex-shrink: 0;
   gap: 10px;
   position: relative;
@@ -21,16 +91,28 @@
 }
 
 .board-toolbar::before {
-  content: 'COMMAND';
-  position: absolute;
-  left: 14px;
-  font-family: var(--font-mono);
-  font-size: 9px;
+  content: '// CMD';
+  font-family: var(--font-heading);
+  font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.2em;
-  color: var(--text-dim);
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  flex-shrink: 0;
 }
 
+.board-toolbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent) 0%, transparent 55%);
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+/* ── Scroll area ──────────────────────────────────────────── */
 .board-scroll-area {
   flex: 1;
   display: flex;
@@ -40,11 +122,14 @@
 .board-columns {
   flex: 1;
   display: flex;
-  gap: 12px;
-  padding: 14px;
+  gap: 10px;
+  padding: 16px;
   overflow-x: auto;
   align-items: flex-start;
   counter-reset: col-counter;
+  background-image: radial-gradient(circle, var(--grid-dot) 1px, transparent 1px);
+  background-size: 28px 28px;
+  position: relative;
 }
 
 .board-empty {
@@ -52,27 +137,420 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-condensed);
-  font-size: 13px;
+  font-family: var(--font-mono);
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--text-dim);
+  background-image: radial-gradient(circle, var(--grid-dot) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
 .board-loading {
   position: absolute;
-  bottom: 16px;
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   background: var(--accent);
-  color: #fff;
-  padding: 6px 20px;
-  font-family: var(--font-condensed);
-  font-size: 11px;
-  font-weight: 900;
-  letter-spacing: 0.2em;
+  color: var(--bg);
+  padding: 5px 22px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
   text-transform: uppercase;
-  border: 2px solid var(--accent);
-  box-shadow: var(--shadow-btn);
+  border: 1px solid var(--accent);
+  animation: load-pulse 1s ease-in-out infinite;
+}
+
+@keyframes load-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+/* ══════════════════════════════════════════════════════════
+   Board background decoration layer
+   ══════════════════════════════════════════════════════════ */
+.board-bg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* ── Horizontal text strips ─────────────────────────────── */
+.board-bg-htext {
+  position: absolute;
+  left: 0;
+  right: 0;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--accent);
+  opacity: 0.06;
+}
+.board-bg-htext--1 { top: 8%;   }
+.board-bg-htext--2 { top: 20%;  }
+.board-bg-htext--3 { bottom: 8%; }
+
+/* ── Vertical text strips ───────────────────────────────── */
+.board-bg-vtext {
+  position: absolute;
+  top: 10%;
+  bottom: 10%;
+  writing-mode: vertical-rl;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--accent);
+  opacity: 0.06;
+}
+.board-bg-vtext--l { left: 1.5%;  transform: rotate(180deg); }
+.board-bg-vtext--r { right: 1.5%; }
+
+/* ── Barcodes ───────────────────────────────────────────── */
+.board-bg-barcode {
+  position: absolute;
+  opacity: 0.06;
+}
+
+.board-bg-barcode--h1 {
+  top: 6%; left: 5%;
+  width: 180px; height: 36px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0,   var(--accent) 2px,
+    transparent 2px,   transparent 5px,
+    var(--accent) 5px, var(--accent) 6px,
+    transparent 6px,   transparent 11px,
+    var(--accent) 11px, var(--accent) 14px,
+    transparent 14px,  transparent 16px,
+    var(--accent) 16px, var(--accent) 17px,
+    transparent 17px,  transparent 22px,
+    var(--accent) 22px, var(--accent) 25px,
+    transparent 25px,  transparent 28px,
+    var(--accent) 28px, var(--accent) 29px,
+    transparent 29px,  transparent 35px,
+    var(--accent) 35px, var(--accent) 37px,
+    transparent 37px,  transparent 41px,
+    var(--accent) 41px, var(--accent) 42px,
+    transparent 42px,  transparent 48px,
+    var(--accent) 48px, var(--accent) 51px,
+    transparent 51px,  transparent 54px,
+    var(--accent) 54px, var(--accent) 56px,
+    transparent 56px,  transparent 60px,
+    var(--accent) 60px, var(--accent) 61px,
+    transparent 61px,  transparent 67px,
+    var(--accent) 67px, var(--accent) 70px,
+    transparent 70px,  transparent 73px,
+    var(--accent) 73px, var(--accent) 75px,
+    transparent 75px,  transparent 80px,
+    var(--accent) 80px, var(--accent) 81px,
+    transparent 81px,  transparent 87px,
+    var(--accent) 87px, var(--accent) 90px,
+    transparent 90px,  transparent 93px,
+    var(--accent) 93px, var(--accent) 95px,
+    transparent 95px,  transparent 100px,
+    var(--accent) 100px, var(--accent) 101px,
+    transparent 101px, transparent 107px,
+    var(--accent) 107px, var(--accent) 110px,
+    transparent 110px, transparent 113px,
+    var(--accent) 113px, var(--accent) 115px,
+    transparent 115px, transparent 120px,
+    var(--accent) 120px, var(--accent) 122px,
+    transparent 122px, transparent 126px,
+    var(--accent) 126px, var(--accent) 127px,
+    transparent 127px, transparent 133px,
+    var(--accent) 133px, var(--accent) 136px,
+    transparent 136px, transparent 139px,
+    var(--accent) 139px, var(--accent) 141px,
+    transparent 141px, transparent 145px,
+    var(--accent) 145px, var(--accent) 146px,
+    transparent 146px, transparent 152px,
+    var(--accent) 152px, var(--accent) 155px,
+    transparent 155px, transparent 157px,
+    var(--accent) 157px, var(--accent) 159px,
+    transparent 159px, transparent 163px,
+    var(--accent) 163px, var(--accent) 164px,
+    transparent 164px, transparent 170px,
+    var(--accent) 170px, var(--accent) 173px,
+    transparent 173px, transparent 176px,
+    var(--accent) 176px, var(--accent) 178px,
+    transparent 178px, transparent 180px
+  );
+}
+
+.board-bg-barcode--h2 {
+  bottom: 6%; right: 5%;
+  width: 140px; height: 28px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--accent) 0,    var(--accent) 3px,
+    transparent 3px,    transparent 7px,
+    var(--accent) 7px,  var(--accent) 8px,
+    transparent 8px,    transparent 14px,
+    var(--accent) 14px, var(--accent) 17px,
+    transparent 17px,   transparent 20px,
+    var(--accent) 20px, var(--accent) 21px,
+    transparent 21px,   transparent 27px,
+    var(--accent) 27px, var(--accent) 30px,
+    transparent 30px,   transparent 33px,
+    var(--accent) 33px, var(--accent) 35px,
+    transparent 35px,   transparent 39px,
+    var(--accent) 39px, var(--accent) 40px,
+    transparent 40px,   transparent 46px,
+    var(--accent) 46px, var(--accent) 49px,
+    transparent 49px,   transparent 52px,
+    var(--accent) 52px, var(--accent) 54px,
+    transparent 54px,   transparent 58px,
+    var(--accent) 58px, var(--accent) 59px,
+    transparent 59px,   transparent 65px,
+    var(--accent) 65px, var(--accent) 68px,
+    transparent 68px,   transparent 71px,
+    var(--accent) 71px, var(--accent) 73px,
+    transparent 73px,   transparent 77px,
+    var(--accent) 77px, var(--accent) 78px,
+    transparent 78px,   transparent 84px,
+    var(--accent) 84px, var(--accent) 87px,
+    transparent 87px,   transparent 90px,
+    var(--accent) 90px, var(--accent) 92px,
+    transparent 92px,   transparent 96px,
+    var(--accent) 96px, var(--accent) 97px,
+    transparent 97px,   transparent 103px,
+    var(--accent) 103px, var(--accent) 106px,
+    transparent 106px,  transparent 109px,
+    var(--accent) 109px, var(--accent) 111px,
+    transparent 111px,  transparent 115px,
+    var(--accent) 115px, var(--accent) 116px,
+    transparent 116px,  transparent 121px,
+    var(--accent) 121px, var(--accent) 124px,
+    transparent 124px,  transparent 127px,
+    var(--accent) 127px, var(--accent) 129px,
+    transparent 129px,  transparent 133px,
+    var(--accent) 133px, var(--accent) 134px,
+    transparent 134px,  transparent 140px
+  );
+}
+
+.board-bg-barcode--v1 {
+  top: 3%; left: 48%;
+  width: 28px; height: 140px;
+  background: repeating-linear-gradient(
+    0deg,
+    var(--accent) 0,    var(--accent) 2px,
+    transparent 2px,    transparent 6px,
+    var(--accent) 6px,  var(--accent) 7px,
+    transparent 7px,    transparent 13px,
+    var(--accent) 13px, var(--accent) 16px,
+    transparent 16px,   transparent 19px,
+    var(--accent) 19px, var(--accent) 20px,
+    transparent 20px,   transparent 26px,
+    var(--accent) 26px, var(--accent) 29px,
+    transparent 29px,   transparent 32px,
+    var(--accent) 32px, var(--accent) 34px,
+    transparent 34px,   transparent 38px,
+    var(--accent) 38px, var(--accent) 39px,
+    transparent 39px,   transparent 45px,
+    var(--accent) 45px, var(--accent) 48px,
+    transparent 48px,   transparent 51px,
+    var(--accent) 51px, var(--accent) 53px,
+    transparent 53px,   transparent 57px,
+    var(--accent) 57px, var(--accent) 58px,
+    transparent 58px,   transparent 64px,
+    var(--accent) 64px, var(--accent) 67px,
+    transparent 67px,   transparent 70px,
+    var(--accent) 70px, var(--accent) 72px,
+    transparent 72px,   transparent 76px,
+    var(--accent) 76px, var(--accent) 77px,
+    transparent 77px,   transparent 83px,
+    var(--accent) 83px, var(--accent) 86px,
+    transparent 86px,   transparent 89px,
+    var(--accent) 89px, var(--accent) 91px,
+    transparent 91px,   transparent 95px,
+    var(--accent) 95px, var(--accent) 96px,
+    transparent 96px,   transparent 102px,
+    var(--accent) 102px, var(--accent) 105px,
+    transparent 105px,  transparent 108px,
+    var(--accent) 108px, var(--accent) 110px,
+    transparent 110px,  transparent 114px,
+    var(--accent) 114px, var(--accent) 115px,
+    transparent 115px,  transparent 121px,
+    var(--accent) 121px, var(--accent) 124px,
+    transparent 124px,  transparent 127px,
+    var(--accent) 127px, var(--accent) 129px,
+    transparent 129px,  transparent 133px,
+    var(--accent) 133px, var(--accent) 134px,
+    transparent 134px,  transparent 140px
+  );
+}
+
+.board-bg-barcode--v2 {
+  bottom: 5%; right: 30%;
+  width: 22px; height: 100px;
+  background: repeating-linear-gradient(
+    0deg,
+    var(--accent) 0,    var(--accent) 2px,
+    transparent 2px,    transparent 5px,
+    var(--accent) 5px,  var(--accent) 7px,
+    transparent 7px,    transparent 11px,
+    var(--accent) 11px, var(--accent) 12px,
+    transparent 12px,   transparent 17px,
+    var(--accent) 17px, var(--accent) 20px,
+    transparent 20px,   transparent 23px,
+    var(--accent) 23px, var(--accent) 25px,
+    transparent 25px,   transparent 29px,
+    var(--accent) 29px, var(--accent) 30px,
+    transparent 30px,   transparent 36px,
+    var(--accent) 36px, var(--accent) 39px,
+    transparent 39px,   transparent 42px,
+    var(--accent) 42px, var(--accent) 44px,
+    transparent 44px,   transparent 48px,
+    var(--accent) 48px, var(--accent) 49px,
+    transparent 49px,   transparent 55px,
+    var(--accent) 55px, var(--accent) 58px,
+    transparent 58px,   transparent 61px,
+    var(--accent) 61px, var(--accent) 63px,
+    transparent 63px,   transparent 67px,
+    var(--accent) 67px, var(--accent) 68px,
+    transparent 68px,   transparent 74px,
+    var(--accent) 74px, var(--accent) 77px,
+    transparent 77px,   transparent 80px,
+    var(--accent) 80px, var(--accent) 82px,
+    transparent 82px,   transparent 86px,
+    var(--accent) 86px, var(--accent) 87px,
+    transparent 87px,   transparent 93px,
+    var(--accent) 93px, var(--accent) 96px,
+    transparent 96px,   transparent 98px,
+    var(--accent) 98px, var(--accent) 100px
+  );
+}
+
+/* ── Circles ────────────────────────────────────────────── */
+.board-bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  opacity: 0.06;
+}
+.board-bg-circle--lg {
+  width: 340px; height: 340px;
+  bottom: -80px; left: 3%;
+}
+.board-bg-circle--sm {
+  width: 120px; height: 120px;
+  top: 30%; right: 4%;
+}
+
+/* ── Crosshair marks ────────────────────────────────────── */
+.board-bg-cross {
+  position: absolute;
+  width: 40px; height: 40px;
+  opacity: 0.06;
+}
+.board-bg-cross::before,
+.board-bg-cross::after {
+  content: '';
+  position: absolute;
+  background: var(--accent);
+}
+.board-bg-cross::before { top: 50%; left: 0; right: 0; height: 1px; transform: translateY(-50%); }
+.board-bg-cross::after  { left: 50%; top: 0; bottom: 0; width: 1px; transform: translateX(-50%); }
+.board-bg-cross--1 { top: 12%; left: 8%; }
+.board-bg-cross--2 { bottom: 12%; right: 8%; }
+
+/* ── Corner brackets ────────────────────────────────────── */
+.board-bg-bracket {
+  position: absolute;
+  width: 56px; height: 56px;
+  opacity: 0.06;
+}
+.board-bg-bracket--tl {
+  top: 8%; left: 3%;
+  border-top: 2px solid var(--accent);
+  border-left: 2px solid var(--accent);
+}
+.board-bg-bracket--br {
+  bottom: 8%; right: 3%;
+  border-bottom: 2px solid var(--accent);
+  border-right: 2px solid var(--accent);
+}
+
+/* ── Diagonal stripe blocks ─────────────────────────────── */
+.board-bg-diag {
+  position: absolute;
+  opacity: 0.04;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent, transparent 5px,
+    var(--accent) 5px, var(--accent) 6px
+  );
+}
+.board-bg-diag--1 { top: 5%; right: 3%; width: 80px; height: 80px; }
+.board-bg-diag--2 { bottom: 12%; left: 4%; width: 60px; height: 60px; }
+
+/* ── Large display numerals / kanji ─────────────────────── */
+.board-bg-numeral {
+  position: absolute;
+  font-family: var(--font-display);
+  font-weight: 400;
+  color: var(--accent);
+  opacity: 0.06;
+  line-height: 1.5;
+}
+.board-bg-numeral--1 {
+  font-size: clamp(80px, 10vw, 160px);
+  bottom: 2%; left: 4%;
+  font-family: var(--font-mono);
+  letter-spacing: -0.02em;
+}
+.board-bg-numeral--2 {
+  font-size: clamp(100px, 13vw, 200px);
+  top: 14%; right: 2%;
+  font-family: var(--font-body);
+}
+.board-bg-numeral--3 {
+  font-size: clamp(80px, 10vw, 160px);
+  bottom: -5%; right: 16%;
+  font-family: 'AtariKids', monospace;
+}
+
+/* ── Light-mode overrides (green canvas) ──────────────────── */
+[data-theme="light"] .board-watermark {
+  color: #000000;
+  opacity: 0.12;
+}
+
+[data-theme="light"] .board-radar {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 10%,
+    #000000 50%,
+    transparent 90%,
+    transparent 100%
+  );
+}
+
+[data-theme="light"] .board-reticle {
+  color: #000000;
+  opacity: 0.1;
+}
+
+[data-theme="light"] .board-columns {
+  background-image: radial-gradient(circle, rgba(0,0,0,0.12) 1px, transparent 1px);
+}
+
+[data-theme="light"] .board-empty {
+  background-image: radial-gradient(circle, rgba(0,0,0,0.12) 1px, transparent 1px);
 }

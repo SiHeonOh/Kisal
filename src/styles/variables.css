@@ -1,76 +1,84 @@
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,900;1,700&family=Press+Start+2P&display=swap');
 
-/* ── DARK — Swiss-Brutalist Cyberpunk ─────────────────── */
+/* ── DARK — #c2fe0b / cyan / red on navy-black ────────────── */
 :root {
-  --bg:             #0f1420;
-  --surface:        #1C223A;
-  --surface-subtle: #141928;
-  --surface-raised: #212840;
-  --brand-bg:       #0a0d18;
+  --bg:             #060608;
+  --surface:        #0d0f16;
+  --surface-subtle: #0a0c12;
+  --surface-raised: #13172200;
+  --brand-bg:       #000000;
 
-  --accent:         #F44E1C;
-  --accent-2:       #4b607f;
-  --accent-3:       #00C8A0;
+  --accent:         #c2fe0b;   /* lime-chartreuse — main */
+  --accent-neon:    #c2fe0b;   /* always lime — for dark bg elements */
+  --accent-2:       #ff0d1a;   /* neon red */
+  --accent-3:       #01ffff;   /* electric cyan */
+  --accent-4:       #59b41d;   /* vivid green */
 
-  --text:           #E5D4B6;
-  --text-muted:     #8a9bb5;
-  --text-dim:       #4a5a72;
+  --text:           #FFFFFF;
+  --text-muted:     #4a526b;
+  --text-dim:       #1c2133;
 
-  --border:         #F44E1C;
-  --border-alt:     #E5D4B6;
-  --border-subtle:  #252e4a;
-  --danger:         #ff3b2f;
+  --border:         #c2fe0b;
+  --border-alt:     #FFFFFF;
+  --border-subtle:  #181e2e;
+  --danger:         #ff0d1a;
 
-  /* Fonts */
-  --font-condensed: 'Barlow Condensed', 'Antonio', Impact, sans-serif;
+  --grid-dot:       rgba(194, 254, 11, 0.07);
+
+  --font-condensed: 'Barlow Condensed', 'Arial Narrow', sans-serif;
   --font-display:   'Maratype', 'Courier New', monospace;
-  --font-heading:   'Algerian', Georgia, serif;
+  --font-nucore:    'NuCore', 'Barlow Condensed', sans-serif;
+  --font-heading:   'Algerian', 'Barlow Condensed', sans-serif;
   --font-body:      'Luna', 'Barlow Condensed', sans-serif;
   --font-mono:      'Courier New', monospace;
 
-  /* Printing-press offset shadows */
-  --shadow-card:    4px 4px 0px var(--accent);
-  --shadow-btn:     3px 3px 0px var(--accent);
-  --shadow-btn-alt: 3px 3px 0px var(--border-alt);
+  --shadow-card:    3px 3px 0px var(--accent);
+  --shadow-btn:     2px 2px 0px var(--accent);
+  --shadow-btn-alt: 2px 2px 0px var(--border-alt);
 
   --radius: 0px;
-  --transition: 100ms ease;
+  --transition: 80ms ease;
 
   --stripe: repeating-linear-gradient(
-    45deg,
+    -45deg,
     var(--accent) 0, var(--accent) 1px,
-    transparent 1px, transparent 14px
+    transparent 1px, transparent 22px
   );
 }
 
-/* ── LIGHT ────────────────────────────────────────────── */
+/* ── LIGHT — Lime-chartreuse Canvas, Black + White Chrome ─── */
 [data-theme="light"] {
-  --bg:             #E5D4B6;
-  --surface:        #d4c4a6;
-  --surface-subtle: #c8b898;
-  --surface-raised: #daccb2;
-  --brand-bg:       #1C223A;
+  /* ↓ THE board canvas IS lime-chartreuse */
+  --bg:             #c2fe0b;
+  --surface:        #FFFFFF;   /* white cards / panels */
+  --surface-subtle: #F2F2F2;   /* toolbar / column-header tint */
+  --surface-raised: #FFFFFF;
+  --brand-bg:       #000000;   /* header / ticker / tabs / status stay black */
 
-  --accent:         #F44E1C;
-  --accent-2:       #1C223A;
-  --accent-3:       #2A8A6E;
+  --accent:         #000000;   /* primary accent on lime/white surfaces */
+  --accent-neon:    #c2fe0b;   /* always lime — for items on black surfaces */
+  --accent-2:       #ff0d1a;
+  --accent-3:       #0055FF;
+  --accent-4:       #59b41d;
 
-  --text:           #1C223A;
-  --text-muted:     #4b607f;
-  --text-dim:       #8a9bb5;
+  --text:           #000000;
+  --text-muted:     #555555;
+  --text-dim:       #888888;
 
-  --border:         #1C223A;
-  --border-alt:     #1C223A;
-  --border-subtle:  #b8a88a;
-  --danger:         #C0392B;
+  --border:         #000000;
+  --border-alt:     #FFFFFF;
+  --border-subtle:  rgba(0, 0, 0, 0.14);
+  --danger:         #CC0000;
 
-  --shadow-card:    4px 4px 0px #1C223A;
-  --shadow-btn:     3px 3px 0px #1C223A;
-  --shadow-btn-alt: 3px 3px 0px #1C223A;
+  --grid-dot:       rgba(0, 0, 0, 0.13);
+
+  --shadow-card:    3px 3px 0px #000000;
+  --shadow-btn:     2px 2px 0px #000000;
+  --shadow-btn-alt: 2px 2px 0px #FFFFFF;
 
   --stripe: repeating-linear-gradient(
-    45deg,
-    #1C223A 0, #1C223A 1px,
-    transparent 1px, transparent 14px
+    -45deg,
+    #000000 0, #000000 1px,
+    transparent 1px, transparent 22px
   );
 }

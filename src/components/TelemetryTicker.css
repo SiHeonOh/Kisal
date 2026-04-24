@@ -1,0 +1,75 @@
+.ticker-root {
+  height: 20px;
+  background: var(--brand-bg);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 9;
+}
+
+/* Left "SYS" label badge */
+.ticker-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: #000000;
+  background: var(--accent-neon);
+  padding: 0 8px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  user-select: none;
+}
+
+/* Fade-out mask on the right side */
+.ticker-root::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 60px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--brand-bg));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ticker-track {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.ticker-content {
+  display: inline-block;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.38);
+  /* scroll duration: longer = slower. ~60s for a leisurely pace */
+  animation: ticker-scroll 55s linear infinite;
+  padding-left: 16px;
+}
+
+/* Dim accent color on the // separators */
+.ticker-content::first-line {
+  color: var(--text-dim);
+}
+
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Pause on hover so you can read it */
+.ticker-root:hover .ticker-content {
+  animation-play-state: paused;
+}

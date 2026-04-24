@@ -8,9 +8,17 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
 }
 
+function pad(n: number) { return String(n).padStart(2, '0'); }
+
 export function AppHeader() {
   const { state, actions } = useAppStore();
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
+  const [now, setNow] = useState(new Date());
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -22,7 +30,9 @@ export function AppHeader() {
   }, []);
 
   const nextTheme = state.theme === 'light' ? 'dark' : 'light';
-  const themeLabel = state.theme === 'light' ? '☀' : '☾';
+
+  const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+  const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
 
   async function handleInstall() {
     if (!installPrompt) return;
@@ -32,28 +42,39 @@ export function AppHeader() {
 
   return (
     <header className="app-header">
-      <span className="app-logo">KISAL</span>
+      <div className="app-header-left">
+        <span className="app-logo">KISAL</span>
+        <span className="app-logo-sub">// TASK BOARD</span>
+      </div>
+
+      <div className="app-header-sys">
+        <span className="app-sys-dot" />
+        <span className="app-sys-date">{dateStr}</span>
+        <span className="app-sys-divider">//</span>
+        <span className="app-sys-clock">{timeStr}</span>
+      </div>
+
       <div className="app-header-actions">
         {installPrompt && (
           <button className="header-btn" onClick={handleInstall} title="Install app">
-            Install
+            INSTALL
           </button>
         )}
         <button
-          className="header-btn header-btn--icon"
+          className="header-btn"
           onClick={() => actions.setTheme(nextTheme)}
-          title={`Theme: ${state.theme}`}
+          title={`Switch to ${nextTheme} mode`}
           aria-label="Toggle theme"
         >
-          {themeLabel}
+          {state.theme === 'dark' ? '◐ LIGHT' : '◑ DARK'}
         </button>
         <button
-          className="header-btn header-btn--icon"
+          className="header-btn header-btn--exit"
           onClick={() => supabase.auth.signOut()}
           title="Sign out"
           aria-label="Sign out"
         >
-          ⏻
+          EXIT
         </button>
       </div>
     </header>

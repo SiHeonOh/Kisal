@@ -3,32 +3,34 @@
 }
 
 .col-toggle-btn {
-  height: 30px;
-  padding: 0 14px;
-  font-family: var(--font-condensed);
-  font-size: 10px;
+  height: 28px;
+  padding: 0 16px;
+  font-family: var(--font-body);
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  border: 2px solid var(--border-subtle);
-  background: var(--surface-subtle);
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  background: transparent;
   cursor: pointer;
   transition: all var(--transition);
+  opacity: 0.7;
 }
 
 .col-toggle-btn::before {
   content: '// ';
-  color: var(--accent);
-  font-family: var(--font-mono);
+  font-family: var(--font-heading);
   font-weight: 400;
+  opacity: 0.6;
 }
 
 .col-toggle-btn:hover {
-  color: var(--text);
+  color: var(--accent);
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 8%, var(--surface-subtle));
-  box-shadow: var(--shadow-btn);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+  box-shadow: 3px 3px 0px var(--accent);
+  opacity: 1;
 }
 
 .col-toggle-popover {
@@ -36,23 +38,38 @@
   top: calc(100% + 6px);
   right: 0;
   background: var(--surface);
-  border: 2px solid var(--border-subtle);
-  border-top: 3px solid var(--accent);
-  padding: 6px 0;
+  border: 1px solid var(--border-subtle);
+  border-top: 2px solid var(--accent);
+  padding: 4px 0;
   min-width: 190px;
   z-index: 100;
-  box-shadow: var(--shadow-card);
+  box-shadow: 4px 4px 0px var(--accent);
+  position: absolute;
+}
+
+/* Bottom-right corner bracket */
+.col-toggle-popover::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
+  pointer-events: none;
+  opacity: 0.5;
 }
 
 .col-toggle-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 8px 14px;
-  font-family: var(--font-condensed);
+  padding: 8px 16px;
+  font-family: var(--font-body);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-muted);
   cursor: pointer;
@@ -60,15 +77,15 @@
 }
 
 .col-toggle-item:hover {
-  background: var(--surface-subtle);
-  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 6%, transparent);
+  color: var(--accent);
 }
 
 .col-toggle-item input[type="checkbox"] {
   accent-color: var(--accent);
   cursor: pointer;
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
 }
 
 .col-toggle-backdrop {

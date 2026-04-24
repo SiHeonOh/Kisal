@@ -1,0 +1,81 @@
+.status-bar {
+  height: 22px;
+  background: var(--brand-bg);
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 14px;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+  user-select: none;
+}
+
+/* Top neon line */
+.status-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent-neon) 0%, transparent 50%);
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.status-bar-dot {
+  width: 5px;
+  height: 5px;
+  background: var(--accent-neon);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-right: 10px;
+  animation: status-pulse 3s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 4px var(--accent-neon); }
+  50%       { opacity: 0.3; box-shadow: none; }
+}
+
+.status-bar-segment {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.status-bar-key {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.status-bar-sep {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-dim);
+}
+
+.status-bar-val {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-neon);
+  font-variant-numeric: tabular-nums;
+}
+
+.status-bar-div {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-dim);
+  margin: 0 8px;
+  letter-spacing: 0.1em;
+}
