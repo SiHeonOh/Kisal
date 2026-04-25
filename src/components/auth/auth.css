@@ -499,6 +499,12 @@
   box-shadow: 2px 2px 0px rgba(194, 254, 11, 0.2);
 }
 
+.auth-input--error {
+  border-color: rgba(255, 60, 60, 0.5);
+  border-left-color: #ff3c3c;
+  box-shadow: 2px 2px 0px rgba(255, 60, 60, 0.2);
+}
+
 /* ── Submit button ────────────────────────────────────── */
 .auth-btn {
   width: 100%;

@@ -27,33 +27,24 @@ const DEFAULT_VISIBLE: Set<ColumnId> = new Set([
   'backlog', 'started', 'in_progress', 'done', 'persistent',
 ]);
 
-function loadGlobalTags(): string[] {
-  try { return JSON.parse(localStorage.getItem('kisal-global-tags') ?? '[]'); }
+// ── Per-sheet tag persistence ──────────────────────────────────────────────
+// Tags are scoped to each sheet. We store "manual" tags (created via the
+// filter bar but not yet on any card) so they survive a page refresh.
+
+function loadSheetTags(sheetId: string): string[] {
+  try { return JSON.parse(localStorage.getItem(`kisal-tags-${sheetId}`) ?? '[]'); }
   catch { return []; }
 }
 
-function mergeIntoGlobalTags(existing: string[], fromCards: KanbanCard[]): string[] {
-  const set = new Set(existing);
-  fromCards.forEach(c => c.tags?.forEach(t => set.add(t)));
-  return [...set].sort();
+function saveSheetTags(sheetId: string, tags: string[]) {
+  localStorage.setItem(`kisal-tags-${sheetId}`, JSON.stringify(tags));
 }
 
-function saveGlobalTags(tags: string[]) {
-  localStorage.setItem('kisal-global-tags', JSON.stringify(tags));
+function deriveSheetTags(sheetId: string, cards: KanbanCard[]): string[] {
+  const manual  = loadSheetTags(sheetId);
+  const fromCards = cards.flatMap(c => c.tags ?? []);
+  return [...new Set([...manual, ...fromCards])].sort();
 }
-
-const initialState: AppState = {
-  session: null,
-  sheets: [],
-  activeSheetId: null,
-  cards: [],
-  visibleColumns: DEFAULT_VISIBLE,
-  selectedCardId: null,
-  theme: (localStorage.getItem('kisal-theme') as AppState['theme']) ?? 'dark',
-  loading: false,
-  globalTags: loadGlobalTags(),
-  activeTagFilters: [],
-};
 
 // ── Actions ────────────────────────────────────────────────────────────────
 
@@ -78,71 +69,101 @@ type Action =
 
 function reducer(state: AppState, action: Action): AppState {
   switch (action.type) {
-    case 'SET_SESSION':    return { ...state, session: action.payload };
-    case 'SET_SHEETS':     return { ...state, sheets: action.payload };
-    case 'SET_ACTIVE_SHEET': return { ...state, activeSheetId: action.payload };
+    case 'SET_SESSION': return { ...state, session: action.payload };
+    case 'SET_SHEETS':  return { ...state, sheets: action.payload };
+
+    // Switching sheets clears tags + filters — SET_CARDS will repopulate them
+    case 'SET_ACTIVE_SHEET':
+      return {
+        ...state,
+        activeSheetId: action.payload,
+        globalTags: [],
+        activeTagFilters: [],
+      };
+
+    // Cards loaded for a sheet — derive tags from those cards + stored manual tags
     case 'SET_CARDS': {
-      const globalTags = mergeIntoGlobalTags(state.globalTags, action.payload);
-      saveGlobalTags(globalTags);
+      const globalTags = state.activeSheetId
+        ? deriveSheetTags(state.activeSheetId, action.payload)
+        : [...new Set(action.payload.flatMap(c => c.tags ?? []))].sort();
       return { ...state, cards: action.payload, globalTags };
     }
+
     case 'ADD_SHEET': return { ...state, sheets: [...state.sheets, action.payload] };
+
     case 'REMOVE_SHEET': {
+      // Clean up per-sheet tag storage
+      localStorage.removeItem(`kisal-tags-${action.payload}`);
       const sheets = state.sheets.filter(s => s.id !== action.payload);
       const activeSheetId = state.activeSheetId === action.payload
         ? (sheets[0]?.id ?? null)
         : state.activeSheetId;
       return { ...state, sheets, activeSheetId };
     }
+
     case 'ADD_CARD': {
-      const globalTags = mergeIntoGlobalTags(state.globalTags, [action.payload]);
-      saveGlobalTags(globalTags);
+      const newTags = (action.payload.tags ?? []).filter(t => !state.globalTags.includes(t));
+      const globalTags = newTags.length
+        ? [...state.globalTags, ...newTags].sort()
+        : state.globalTags;
+      if (state.activeSheetId) saveSheetTags(state.activeSheetId, globalTags);
       return { ...state, cards: [...state.cards, action.payload], globalTags };
     }
+
     case 'UPDATE_CARD': {
-      const cards = state.cards.map(c => c.id === action.payload.id ? action.payload : c);
-      const globalTags = mergeIntoGlobalTags(state.globalTags, [action.payload]);
-      saveGlobalTags(globalTags);
+      const cards    = state.cards.map(c => c.id === action.payload.id ? action.payload : c);
+      const newTags  = (action.payload.tags ?? []).filter(t => !state.globalTags.includes(t));
+      const globalTags = newTags.length
+        ? [...state.globalTags, ...newTags].sort()
+        : state.globalTags;
+      if (state.activeSheetId && newTags.length) saveSheetTags(state.activeSheetId, globalTags);
       return { ...state, cards, globalTags };
     }
+
     case 'REMOVE_CARD':
       return {
         ...state,
         cards: state.cards.filter(c => c.id !== action.payload),
         selectedCardId: state.selectedCardId === action.payload ? null : state.selectedCardId,
       };
+
     case 'TOGGLE_COLUMN': {
       const next = new Set(state.visibleColumns);
       if (next.has(action.payload) && next.size > 1) next.delete(action.payload);
       else next.add(action.payload);
       return { ...state, visibleColumns: next };
     }
-    case 'SELECT_CARD':  return { ...state, selectedCardId: action.payload };
-    case 'SET_THEME':    return { ...state, theme: action.payload };
-    case 'SET_LOADING':  return { ...state, loading: action.payload };
+
+    case 'SELECT_CARD': return { ...state, selectedCardId: action.payload };
+    case 'SET_THEME':   return { ...state, theme: action.payload };
+    case 'SET_LOADING': return { ...state, loading: action.payload };
+
     case 'ADD_GLOBAL_TAG': {
       if (state.globalTags.includes(action.payload)) return state;
       const globalTags = [...state.globalTags, action.payload].sort();
-      saveGlobalTags(globalTags);
+      if (state.activeSheetId) saveSheetTags(state.activeSheetId, globalTags);
       return { ...state, globalTags };
     }
+
     case 'DELETE_GLOBAL_TAG': {
-      const globalTags = state.globalTags.filter(t => t !== action.payload);
-      saveGlobalTags(globalTags);
+      const globalTags       = state.globalTags.filter(t => t !== action.payload);
       const activeTagFilters = state.activeTagFilters.filter(t => t !== action.payload);
-      const cards = state.cards.map(c =>
+      const cards            = state.cards.map(c =>
         c.tags?.includes(action.payload)
           ? { ...c, tags: c.tags.filter(t => t !== action.payload) }
           : c
       );
+      if (state.activeSheetId) saveSheetTags(state.activeSheetId, globalTags);
       return { ...state, globalTags, activeTagFilters, cards };
     }
+
     case 'TOGGLE_TAG_FILTER': {
       const activeTagFilters = state.activeTagFilters.includes(action.payload)
         ? state.activeTagFilters.filter(t => t !== action.payload)
         : [...state.activeTagFilters, action.payload];
       return { ...state, activeTagFilters };
     }
+
     case 'CLEAR_TAG_FILTERS': return { ...state, activeTagFilters: [] };
     default: return state;
   }
@@ -188,8 +209,8 @@ function makeActions(state: AppState, dispatch: Dispatch<Action>) {
     async addCard(columnId: ColumnId, title: string) {
       if (!state.session || !state.activeSheetId) return;
       const colCards = state.cards.filter(c => c.column_id === columnId);
-      const order = colCards.length ? Math.max(...colCards.map(c => c.card_order)) + 1 : 0;
-      const card = await cardsService.createCard(
+      const order    = colCards.length ? Math.max(...colCards.map(c => c.card_order)) + 1 : 0;
+      const card     = await cardsService.createCard(
         state.session.user.id, state.activeSheetId, columnId, title, order,
       );
       dispatch({ type: 'ADD_CARD', payload: card });
@@ -241,6 +262,19 @@ function applyTheme(theme: 'light' | 'dark') {
 }
 
 // ── Provider ───────────────────────────────────────────────────────────────
+
+const initialState: AppState = {
+  session:          null,
+  sheets:           [],
+  activeSheetId:    null,
+  cards:            [],
+  visibleColumns:   DEFAULT_VISIBLE,
+  selectedCardId:   null,
+  theme:            (localStorage.getItem('kisal-theme') as AppState['theme']) ?? 'dark',
+  loading:          false,
+  globalTags:       [],   // populated per-sheet when cards load
+  activeTagFilters: [],
+};
 
 export function AppProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);

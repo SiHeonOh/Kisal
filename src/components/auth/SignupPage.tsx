@@ -4,17 +4,22 @@ import { supabase } from '../../supabase';
 import { AuthLayout } from './AuthLayout';
 
 export function SignupPage() {
-  const [email, setEmail] = useState('');
+  const [email,    setEmail   ] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [confirm,  setConfirm ] = useState('');
+  const [error,    setError   ] = useState('');
+  const [success,  setSuccess ] = useState(false);
+  const [loading,  setLoading ] = useState(false);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError('');
     if (password.length < 8) {
       setError('Password must be at least 8 characters.');
+      return;
+    }
+    if (password !== confirm) {
+      setError('Passwords do not match.');
       return;
     }
     setLoading(true);
@@ -65,6 +70,18 @@ export function SignupPage() {
             required
             value={password}
             onChange={e => setPassword(e.target.value)}
+          />
+        </div>
+        <div className="auth-field">
+          <label className="auth-label" htmlFor="confirm-password">Confirm Password</label>
+          <input
+            id="confirm-password"
+            className={`auth-input${confirm && confirm !== password ? ' auth-input--error' : ''}`}
+            type="password"
+            autoComplete="new-password"
+            required
+            value={confirm}
+            onChange={e => setConfirm(e.target.value)}
           />
         </div>
         {error && <div className="auth-error" role="alert">{error}</div>}
