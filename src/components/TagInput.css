@@ -68,6 +68,30 @@
 
 .tag-suggestion-item:last-child { border-bottom: none; }
 
+/* ── Select-only: dropdown trigger button ────────────────────── */
+.tag-input-wrap--select-only {
+  cursor: default;
+}
+
+.tag-input-select-btn {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px dashed var(--border-subtle);
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.tag-input-select-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 .tag-suggestion-item:hover {
   background: color-mix(in srgb, var(--accent) 8%, transparent);
   color: var(--accent);

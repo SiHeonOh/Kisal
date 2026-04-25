@@ -1,4 +1,4 @@
-.ticker-root {
+.news-ticker-root {
   height: 20px;
   background: var(--brand-bg);
   border-bottom: 1px solid var(--border-subtle);
@@ -10,8 +10,8 @@
   z-index: 9;
 }
 
-/* Left "SYS" label badge */
-.ticker-label {
+/* Left "NEWS" label badge — lime bg, black text to distinguish from SYS */
+.news-ticker-label {
   font-family: var(--font-mono);
   font-size: 8px;
   font-weight: 700;
@@ -27,7 +27,7 @@
 }
 
 /* Fade-out mask on the right side */
-.ticker-root::after {
+.news-ticker-root::after {
   content: '';
   position: absolute;
   top: 0;
@@ -39,14 +39,14 @@
   z-index: 1;
 }
 
-.ticker-track {
+.news-ticker-track {
   flex: 1;
   overflow: hidden;
   display: flex;
   align-items: center;
 }
 
-.ticker-content {
+.news-ticker-content {
   display: inline-block;
   white-space: nowrap;
   font-family: var(--font-mono);
@@ -54,12 +54,17 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   color: rgba(255, 255, 255, 0.75);
-  /* scroll duration: longer = slower. ~60s for a leisurely pace */
-  animation: ticker-scroll 55s linear infinite;
+  animation: news-ticker-scroll 180s linear infinite;
   padding-left: 16px;
 }
 
-@keyframes ticker-scroll {
+.news-ticker-content--dim {
+  color: rgba(255, 255, 255, 0.25);
+  animation-duration: 40s;
+}
+
+@keyframes news-ticker-scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
+

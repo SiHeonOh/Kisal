@@ -1,6 +1,6 @@
 /* ── Card accent token ───────────────────────────────────────── */
 .kanban-card          { --card-accent: #000000; }
-[data-theme="light"] .kanban-card { --card-accent: #c2fe0b; }
+[data-theme="light"] .kanban-card { --card-accent: #ffffff; }
 
 /* ── Card shell ─────────────────────────────────────────────── */
 .kanban-card {

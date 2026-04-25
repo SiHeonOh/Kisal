@@ -7,9 +7,10 @@ interface Props {
   globalTags?: string[];
   onChange: (tags: string[]) => void;
   maxTags?: number;
+  selectOnly?: boolean; // when true: only allow picking from existing globalTags
 }
 
-export function TagInput({ tags, globalTags = [], onChange, maxTags = 10 }: Props) {
+export function TagInput({ tags, globalTags = [], onChange, maxTags = 10, selectOnly = false }: Props) {
   const [value, setValue] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -38,6 +39,42 @@ export function TagInput({ tags, globalTags = [], onChange, maxTags = 10 }: Prop
     }
   }
 
+  /* ── Select-only mode: no text input, just a dropdown button ── */
+  if (selectOnly) {
+    return (
+      <div className="tag-input-wrap tag-input-wrap--select-only">
+        <div className="tag-input-chips">
+          {tags.map(tag => (
+            <TagChip key={tag} tag={tag} onRemove={() => onChange(tags.filter(t => t !== tag))} />
+          ))}
+          {tags.length < maxTags && suggestions.length > 0 && (
+            <button
+              className="tag-input-select-btn"
+              onMouseDown={e => { e.preventDefault(); setShowSuggestions(s => !s); }}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+            >
+              + TAG
+            </button>
+          )}
+        </div>
+        {showSuggestions && suggestions.length > 0 && (
+          <div className="tag-suggestions">
+            {suggestions.map(tag => (
+              <button
+                key={tag}
+                className="tag-suggestion-item"
+                onMouseDown={e => { e.preventDefault(); addTag(tag); }}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  /* ── Default mode: text input + suggestions ───────────────── */
   return (
     <div className="tag-input-wrap">
       <div className="tag-input-chips" onClick={() => inputRef.current?.focus()}>

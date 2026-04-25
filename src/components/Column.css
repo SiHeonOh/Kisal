@@ -147,30 +147,72 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 0;           /* spacing is handled by drop slots */
   padding: 8px;
-  min-height: 40px;
+  min-height: 60px;
   position: relative;
 }
 
-.column-drop-hint {
+/* ── Drop slots — live between every card ───────────────────── */
+.column-drop-slot {
+  height: 6px;      /* provides the gap between cards */
+  flex-shrink: 0;
+  position: relative;
+  pointer-events: none; /* inactive slots don't steal events */
+  transition: height 80ms ease;
+}
+
+/* During a drag, re-enable pointer events so slots can be targeted */
+.column--drag-over .column-drop-slot {
+  pointer-events: auto;
+}
+
+.column-drop-slot--active {
+  height: 20px;
+}
+
+/* The glowing insertion line */
+.column-drop-slot--active::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  right: 4px;
+  height: 2px;
+  transform: translateY(-50%);
+  background: var(--col-accent);
+  box-shadow: 0 0 8px var(--col-accent);
+}
+
+/* ── Empty-column full-height drop target ───────────────────── */
+.column-empty-drop {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--col-text-dim);
+  color: #000000;
   border: 1px dashed rgba(0,0,0,0.22);
   min-height: 60px;
   padding: 16px;
+  transition: border-color var(--transition), color var(--transition);
 }
 
-[data-theme="light"] .column-drop-hint {
+.column-empty-drop--active {
+  border-color: var(--col-accent);
+  color: var(--col-text);
+}
+
+[data-theme="light"] .column-empty-drop {
   border-color: rgba(255,255,255,0.18);
+}
+
+[data-theme="light"] .column-empty-drop--active {
+  border-color: var(--col-accent);
 }
 
 /* ── Footer + add button ────────────────────────────────────── */
