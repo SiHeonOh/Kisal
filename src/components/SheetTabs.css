@@ -31,8 +31,8 @@
   gap: 8px;
   padding: 0 16px;
   white-space: nowrap;
-  font-family: var(--font-mono);
-  font-size: 9px;
+  font-family: var(--font-body);
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -112,8 +112,8 @@
   border-right: 1px solid var(--border-subtle);
   background: color-mix(in srgb, var(--accent-neon) 5%, transparent);
   color: var(--border-alt);
-  font-family: var(--font-mono);
-  font-size: 9px;
+  font-family: var(--font-body);
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
