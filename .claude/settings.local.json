@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(pandoc \"C:\\\\Users\\\\ocean\\\\OneDrive\\\\문서\\\\kisal-spec.docx\" -o /tmp/kisal-spec.md)",
-      "Read(//tmp/**)",
-      "Bash(npm create *)"
-    ]
-  }
-}
