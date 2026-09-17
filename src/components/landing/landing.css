@@ -111,7 +111,7 @@
 /* ── Hero ─────────────────────────────────────────────────── */
 .ld-hero {
   position: relative;
-  min-height: calc(100vh - 64px);
+  min-height: max(calc(100vh - 64px), 880px);
   padding: 96px 0 72px;
   display: flex;
   flex-direction: column;
@@ -122,7 +122,7 @@
 /* Giant type block */
 .ld-hero-type {
   position: absolute;
-  top: 40px;
+  top: 84px;
   left: 56px;
   right: 0;
   line-height: 0.88;
@@ -519,7 +519,7 @@
 
 .ld-spec-row {
   display: grid;
-  grid-template-columns: 110px 260px 1fr;
+  grid-template-columns: 110px 280px 1fr;
   align-items: baseline;
   gap: 24px;
   padding: 22px 0;
@@ -548,12 +548,13 @@
 
 .ld-spec-detail {
   font-family: var(--font-condensed);
-  font-size: 17px;
-  font-weight: 500;
-  line-height: 1.45;
-  color: rgba(255,255,255,0.78);
+  font-size: clamp(20px, 1.8vw, 26px);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  color: var(--ld-white);
   margin: 0;
-  max-width: 56ch;
+  max-width: 44ch;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -634,8 +635,8 @@
   .ld-top-meta span:not(:first-child) { display: none; }
   .ld-navlink { padding: 0 14px; }
 
-  .ld-hero { min-height: auto; padding: 260px 0 48px; }
-  .ld-hero-type { left: 16px; top: 28px; }
+  .ld-hero { min-height: auto; padding: 290px 0 48px; }
+  .ld-hero-type { left: 16px; top: 56px; }
   .ld-hero-en, .ld-hero-ja { font-size: 26vw; }
   .ld-hero-line2 { font-size: 11vw; padding-right: 0; text-align: left; }
   .ld-hero-card { margin-left: 16px; width: calc(100% - 32px); padding: 0 18px 20px; }
