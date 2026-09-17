@@ -7,6 +7,7 @@ import { App } from './components/App';
 import { LoginPage } from './components/auth/LoginPage';
 import { SignupPage } from './components/auth/SignupPage';
 import { ResetPasswordPage } from './components/auth/ResetPasswordPage';
+import { LandingPage } from './components/landing/LandingPage';
 import './styles/global.css';
 
 if ('serviceWorker' in navigator) {
@@ -24,9 +25,9 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route
-            path="/*"
+            path="/"
             element={
-              <ProtectedRoute>
+              <ProtectedRoute fallback={<LandingPage />}>
                 <App />
               </ProtectedRoute>
             }

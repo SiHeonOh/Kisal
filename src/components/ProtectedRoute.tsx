@@ -5,9 +5,11 @@ import type { Session } from '@supabase/supabase-js';
 
 interface Props {
   children: ReactNode;
+  /** Rendered instead of redirecting to /login when there is no session. */
+  fallback?: ReactNode;
 }
 
-export function ProtectedRoute({ children }: Props) {
+export function ProtectedRoute({ children, fallback }: Props) {
   const [session, setSession] = useState<Session | null | undefined>(undefined);
 
   useEffect(() => {
@@ -26,7 +28,7 @@ export function ProtectedRoute({ children }: Props) {
     );
   }
 
-  if (!session) return <Navigate to="/login" replace />;
+  if (!session) return fallback !== undefined ? <>{fallback}</> : <Navigate to="/login" replace />;
 
   return <>{children}</>;
 }
